@@ -1,0 +1,18 @@
+{
+  "name": "01",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index", //root file name
+    "dev":"node --watch index" //watch root file 
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
+
+//Run server => npm run dev
