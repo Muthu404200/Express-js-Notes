@@ -1,52 +1,29 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+// app.js
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes.js';
+
+dotenv.config();
 
 const app = express();
-const port = 3000;
 
-// Middleware to parse JSON bodies
-app.use(bodyParser.json());
+// Middleware to parse JSON body
+app.use(express.json());
 
-// In-memory "database"
-let items = [];
+// Connect to MongoDB using the connection string from .env
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('Error connecting to MongoDB:', err));
 
-// Routes
-app.get('/items', (req, res) => {
-    res.json(items);
-});
-
-app.get('/items/:id', (req, res) => {
-    const item = items.find(i => i.id === parseInt(req.params.id));
-    if (!item) return res.status(404).json({ message: 'Item not found' });
-    res.json(item);
-});
-
-app.post('/items', (req, res) => {
-    const item = {
-        id: items.length + 1,
-        name: req.body.name
-    };
-    items.push(item);
-    res.status(201).json(item);
-});
-
-app.put('/items/:id', (req, res) => {
-    const item = items.find(i => i.id === parseInt(req.params.id));
-    if (!item) return res.status(404).json({ message: 'Item not found' });
-
-    item.name = req.body.name;
-    res.json(item);
-});
-
-app.delete('/items/:id', (req, res) => {
-    const itemIndex = items.findIndex(i => i.id === parseInt(req.params.id));
-    if (itemIndex === -1) return res.status(404).json({ message: 'Item not found' });
-
-    items.splice(itemIndex, 1);
-    res.status(204).send();
-});
+// Use the user routes
+app.use('/users', userRoutes);
 
 // Start the server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

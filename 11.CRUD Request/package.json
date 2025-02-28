@@ -1,16 +1,19 @@
 {
-  "name": "01",
+  "name": "11.crud-request",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index",
-    "dev":"node --watch index"
+    "dev": "node --watch --env-file=.env index"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
-    "express": "^4.21.2"
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.11.0"
   }
 }
